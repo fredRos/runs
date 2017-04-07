@@ -71,9 +71,11 @@ parts as well. Some simple examples
 partitions while keeping memory allocations to a minimum. A
 `Partition` is essentially a triple `c, y, h` (in Zoghbi's notation) where
 
+    n = \sum_{i=1}^h c_i * y_i
+
 * `c = Partition::mult()` refers to a vector with the multiplicities,
 * `y = Partition::parts()` refers to a vector with distinct parts,
-* `h = Partition::distinct_parts()` gives the number of distinct parts.
+* `h = Partition::distinct_parts()` refers to the number of distinct parts.
 
 To reduce the memory allocations, the generator updates the partition
 in place and the vectors `c,y` are long enough to hold the partition
@@ -87,10 +89,10 @@ In the code, this becomes
 
     h == 2
 
-    c[1] == 1
-    c[2] == 1
-
+    c[1] == 2
     y[1] == 1
+
+    c[2] == 1
     y[2] == 4
 
 Ignore the first element `c[0], y[0]` and do not read beyond

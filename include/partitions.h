@@ -39,7 +39,7 @@ public:
     bool operator==(const Partition&) const;
     const vec& mult() const { return c; }
     const vec& parts() const { return y; }
-    UInt_t distinct_parts() const { return h; }
+    const UInt_t& distinct_parts() const { return h; }
     UInt_t number() const { return n; }
 
 private:
