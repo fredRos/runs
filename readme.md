@@ -129,3 +129,20 @@ building the first time.
     cmake ..
     make
     OMP_NUM_THREADS=4 ./runs_test
+
+citing
+------
+
+If you use this code in an academic setting, please cite this
+reference.
+
+    @article{beaujean2011test,
+    title={A test statistic for weighted runs},
+    author={Beaujean, Frederik and Caldwell, Allen},
+    journal={Journal of Statistical Planning and Inference},
+    volume={141},
+    number={11},
+    pages={3437--3446},
+    year={2011},
+    publisher={Elsevier}
+    }
