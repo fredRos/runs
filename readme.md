@@ -141,9 +141,24 @@ To install
     make install
 
 To link to this in your own code, just link to the library and include
-the headers from whereever you chose to install them. In case you
-didn't specify, pay attention to the output when running the above
-command.
+the headers from whereever you chose to install them. For example if
+you installed to `/tmp`, compile and link your code in `runstest.cxx`
+
+    #include "pvalue.h"
+
+    int main()
+    {
+        double Tobs = 3.3;
+        unsigned N = 10;
+        runs_cumulative(Tobs, N);
+        runs_pvalue(Tobs, N);
+
+        return 0;
+    }
+
+like this
+
+    g++ -fopenmp runstest.cxx -I/tmp/include -L/tmp/lib -lruns -lgsl -lblas
 
 citing
 ------
