@@ -16,30 +16,33 @@ The reference implementation is in the `mathematica` package
 `RunsWeightedPackage`. To use it from a `mathematica` notebook,
 download the package to a directory `/package/dir` on your computer and do
 
-    SetDirectory["/package/dir"]
-    Needs["RunsWeightedPackage`"]
+``` mathematica
+SetDirectory["/package/dir"]
+Needs["RunsWeightedPackage`"]
+```
 
 All exported commands in the package are accessible via
 
-    ?"RunsWeightedPackage`*"
+``` mathematica
+?"RunsWeightedPackage`*"
+```
 
 The most important commands to compute the p value for the runs
 statistic are
 
-    # compute the p value using the exact expression that involves
-    # summing over integer partitions
-    n = 10
-    pValueRuns[3.3, n]
+``` mathematica
+(* compute the p value using the exact expression that involves summing over integer partitions *)
+n = 10
+pValueRuns[3.3, n]
 
-    # use Monte Carlo experiments to approximate the p value. Much
-    # faster for n > 80 than the exact expression
-    n = 500
-    pValueRunsMC[35.3, n]
+(* use Monte Carlo experiments to approximate the p value. Much faster for n > 80 than the exact expression *)
+n = 500
+pValueRunsMC[35.3, n]
 
-    # calculate the runs statistic from a list of values interpreted
-    # as independent samples from a standard normal distribution
-    runsSuccess
-    runsSuccess[{-1,1,3,-2}]==10
+(* calculate the runs statistic from a list of values interpreted as independent samples from a standard normal distribution *)
+runsSuccess
+runsSuccess[{-1,1,3,-2}]==10
+```
 
 c++
 ---
@@ -56,16 +59,18 @@ A. Zoghbi: Algorithms for generating integer partitions, Ottawa
 I made the necessary modifications to partition `n` into exactly `k`
 parts as well. Some simple examples
 
-    #include <partition.h>
-    #include <iostream>
+``` c++
+#include <partition.h>
+#include <iostream>
 
-    # print all partitions of 6 into any number of parts
-    for (PartitionGenerator gen(6); gen; ++gen)
-        std::cout << *gen << std::endl;
+# print all partitions of 6 into any number of parts
+for (PartitionGenerator gen(6); gen; ++gen)
+    std::cout << *gen << std::endl;
 
-    # print all partitions of 6 into 3 parts
-    for (KPartitionGenerator gen(6, 3); gen; ++gen)
-        std::cout << *gen << std::endl;
+# print all partitions of 6 into 3 parts
+for (KPartitionGenerator gen(6, 3); gen; ++gen)
+    std::cout << *gen << std::endl;
+```
 
 `gen` is an iterator to a `Partition` and permits visiting all
 partitions while keeping memory allocations to a minimum. A
@@ -106,10 +111,12 @@ sequence of `N` independent trials with Gaussian uncertainty. Then the
 cumulative distribution `P(T < Tobs | N)` and the p value `P(T >= Tobs
 | N)` are available as
 
-    include "pvalue.h"
+``` c++
+include "pvalue.h"
 
-    runs_cumulative(Tobs, N);
-    runs_pvalue(Tobs, N);
+runs_cumulative(Tobs, N);
+runs_pvalue(Tobs, N);
+```
 
 `openMP` helps as the speed-up of evaluating `runs_cumulative` for
 large `N>50` scales linearly with the number of physical cores and
@@ -144,17 +151,19 @@ To link to this in your own code, just link to the library and include
 the headers from whereever you chose to install them. For example if
 you installed to `/tmp`, compile and link your code in `runstest.cxx`
 
-    #include "pvalue.h"
+``` c++
+#include "pvalue.h"
 
-    int main()
-    {
-        double Tobs = 3.3;
-        unsigned N = 10;
-        runs_cumulative(Tobs, N);
-        runs_pvalue(Tobs, N);
+int main()
+{
+    double Tobs = 3.3;
+    unsigned N = 10;
+    runs_cumulative(Tobs, N);
+    runs_pvalue(Tobs, N);
 
-        return 0;
-    }
+    return 0;
+}
+```
 
 like this
 
