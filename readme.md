@@ -132,6 +132,19 @@ building the first time.
     make
     OMP_NUM_THREADS=4 ./runs_test
 
+To specify where the library and headers should be installed, use
+
+    cmake -DCMAKE_INSTALL_PREFIX=/path/to/installation ..
+
+To install
+
+    make install
+
+To link to this in your own code, just link to the library and include
+the headers from whereever you chose to install them. In case you
+didn't specify, pay attention to the output when running the above
+command.
+
 citing
 ------
 

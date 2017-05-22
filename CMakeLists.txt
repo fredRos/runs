@@ -37,12 +37,19 @@ add_subdirectory(${EXT_PROJECTS_DIR}/gtest)
 #-------------------
 # Module source
 #-------------------
-set(PROJECT_LIB_NAME ${PROJECT_NAME_STR}_impl)
+set(PROJECT_LIB_NAME ${PROJECT_NAME_STR})
 
 include_directories(${COMMON_INCLUDES})
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
+file(GLOB HEADER_FILES ${COMMON_INCLUDES}/*.h)
 add_library(${PROJECT_LIB_NAME} ${SRC_FILES})
 target_link_libraries(${PROJECT_LIB_NAME} ${GSL_LIBRARIES})
+
+#-------------------
+# Installation
+#-------------------
+install(TARGETS ${PROJECT_LIB_NAME} DESTINATION lib)
+install(FILES ${HEADER_FILES} DESTINATION include)
 
 #-------------------
 # Test
