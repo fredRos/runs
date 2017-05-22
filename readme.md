@@ -63,11 +63,11 @@ parts as well. Some simple examples
 #include <partition.h>
 #include <iostream>
 
-# print all partitions of 6 into any number of parts
+// print all partitions of 6 into any number of parts
 for (PartitionGenerator gen(6); gen; ++gen)
     std::cout << *gen << std::endl;
 
-# print all partitions of 6 into 3 parts
+// print all partitions of 6 into 3 parts
 for (KPartitionGenerator gen(6, 3); gen; ++gen)
     std::cout << *gen << std::endl;
 ```
