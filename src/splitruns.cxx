@@ -18,13 +18,15 @@ namespace {
 
 double h(const double chisq, const unsigned N)
 {
-    // to avoid overflow
-    assert(N < 64);
+    // // to avoid overflow
+    // assert(N < 64);
 
     double res = 0;
+    double weight = 0.5;
     for (auto i = 1u; i <= N; ++i) {
-        unsigned K = (i == N) ? N : i+1;
-        res += 1.0 / (1 << K) * gsl_ran_chisq_pdf(chisq, i);
+        if (i < N)
+            weight *= 0.5;
+        res += weight * gsl_ran_chisq_pdf(chisq, i);
     }
 
     return res;
@@ -32,14 +34,14 @@ double h(const double chisq, const unsigned N)
 
 double H(const double a, const double b, const unsigned N)
 {
-    // to avoid overflow
-    assert(N < 64);
+    // // to avoid overflow
+    // assert(N < 64);
 
     double res = 0;
+    double weight = 0.5;
     for (auto i = 1u; i <= N; ++i) {
-        // power of 2
-        unsigned K = (i == N) ? N : i+1;
-        double weight = 1.0 / (1ul << K);
+        if (i < N)
+            weight *= 0.5;
         res += weight * (gsl_cdf_chisq_P(b, i) - gsl_cdf_chisq_P(a, i));
     }
 
@@ -66,8 +68,7 @@ double Delta(const double Tobs, const unsigned N)
     ::IntegrandData data{Tobs, N};
     F.params = &data;
 
-    gsl_integration_qags (&F, 0, Tobs, 0, 1e-8, limit,
-                          w, &result, &error);
+    gsl_integration_qag(&F, 0, Tobs, 0, 1e-8, limit, GSL_INTEG_GAUSS21, w, &result, &error);
 
     // printf ("result          = % .6e\n", result);
     // printf ("estimated error = % .6e\n", error);
