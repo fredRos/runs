@@ -20,6 +20,16 @@
 #pragma once
 
 /**
+ * F(Tobs | n*N). Evaluates F(Tobs | N) exactly, then approximates.
+ */
+double runs_split_cumulative(const double Tobs, const unsigned N, const unsigned n);
+
+double runs_split_pvalue(const double Tobs, const unsigned N, const unsigned n);
+
+/**
  * Compute \Delta correction term.
  */
-double delta(const double Tobs, const unsigned N);
+double Delta(const double Tobs, const unsigned N);
+
+double h(const double chisq, const unsigned N);
+double H(const double a, const double b, const unsigned N);
