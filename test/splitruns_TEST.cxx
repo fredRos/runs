@@ -12,7 +12,7 @@ TEST(splitruns, split)
     const double F = runs_cumulative(Tobs, N);
     const double approx = F*F / (1.0 + Delta(Tobs, N));
 
-    EXPECT_NEAR(approx, runs_split_cumulative(Tobs, N, n), 1e-16);
+    EXPECT_NEAR(approx, runs_split_cumulative(Tobs, N, n), 1e-15);
 }
 
 TEST(splitruns, approx)
