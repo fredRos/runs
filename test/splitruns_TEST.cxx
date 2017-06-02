@@ -1,9 +1,9 @@
-#include "longruns.h"
+#include "splitruns.h"
 #include "pvalue.h"
 #include "gtest/gtest.h"
 #include <gsl/gsl_cdf.h>
 
-TEST(longruns, split)
+TEST(splitruns, split)
 {
     constexpr double Tobs = 15.5;
     constexpr unsigned N = 12;
@@ -15,7 +15,7 @@ TEST(longruns, split)
     EXPECT_NEAR(approx, runs_split_cumulative(Tobs, N, n), 1e-16);
 }
 
-TEST(longruns, approx)
+TEST(splitruns, approx)
 {
     // compare with full results
     constexpr unsigned N = 25;
@@ -30,7 +30,7 @@ TEST(longruns, approx)
     }
 }
 
-TEST(longruns, hH)
+TEST(splitruns, hH)
 {
     constexpr double Tobs = 15.5;
     constexpr double x = 3.3;
@@ -42,7 +42,7 @@ TEST(longruns, hH)
     EXPECT_NEAR(Delta(Tobs, N), 0.00175994, 1e-8);
 }
 
-TEST(longruns, cdf)
+TEST(splitruns, cdf)
 {
     EXPECT_NEAR(gsl_cdf_chisq_P(15.5, 12), 0.784775, 1e-6);
 }

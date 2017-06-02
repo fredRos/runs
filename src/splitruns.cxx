@@ -1,4 +1,4 @@
-#include "longruns.h"
+#include "splitruns.h"
 #include "pvalue.h"
 
 #include <gsl/gsl_cdf.h>
