@@ -53,8 +53,9 @@ TEST(splitruns, cdf)
 
 TEST(splitruns, long)
 {
+    // just use gtest to measure the time
     constexpr double Tobs = 32;
-    constexpr unsigned N = 100;
+    constexpr unsigned N = 60;
     constexpr unsigned n = 5;
-    runs_split_cumulative(Tobs, N, n);
+    runs_split_cumulative(Tobs, N, n, 1e-13, 1e-20);
 }

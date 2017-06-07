@@ -19,17 +19,20 @@
 // SOFTWARE.
 #pragma once
 
+constexpr double splitruns_epsrel = 1e-10;
+constexpr double splitruns_epsabs = 1e-15;
+
 /**
  * F(Tobs | n*N). Evaluates F(Tobs | N) exactly, then approximates.
  */
-double runs_split_cumulative(const double Tobs, const unsigned N, const unsigned n);
+double runs_split_cumulative(const double Tobs, const unsigned N, const unsigned n, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
 
-double runs_split_pvalue(const double Tobs, const unsigned N, const unsigned n);
+double runs_split_pvalue(const double Tobs, const unsigned N, const unsigned n, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
 
 /**
  * Compute \Delta correction term.
  */
-double Delta(const double Tobs, const unsigned N);
+double Delta(const double Tobs, const unsigned N, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
 
 double h(const double chisq, const unsigned N);
 double H(const double a, const double b, const unsigned N);
