@@ -79,13 +79,13 @@ double Delta(const double Tobs, const unsigned N, double epsrel, double epsabs)
     return result;
 }
 
-double runs_split_cumulative(const double Tobs, const unsigned N, const unsigned n, double epsrel, double epsabs)
+double runs_split_cumulative(const double Tobs, const unsigned N, const double n, double epsrel, double epsabs)
 {
     const double F = runs_cumulative(Tobs, N);
     return pow(F, n) / (1 + (n-1) * Delta(Tobs, N, epsrel, epsabs));
 }
 
-double runs_split_pvalue(const double Tobs, const unsigned N, const unsigned n, double epsrel, double epsabs)
+double runs_split_pvalue(const double Tobs, const unsigned N, const double n, double epsrel, double epsabs)
 {
     return 1-runs_split_cumulative(Tobs, N, n, epsrel, epsabs);
 }

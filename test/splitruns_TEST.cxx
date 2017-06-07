@@ -57,5 +57,23 @@ TEST(splitruns, long)
     constexpr double Tobs = 32;
     constexpr unsigned N = 60;
     constexpr unsigned n = 5;
-    runs_split_cumulative(Tobs, N, n, 1e-13, 1e-20);
+    // runs_split_cumulative(Tobs, N, n, 1e-13, 1e-20);
+    Delta(Tobs, N, 1e-4, 1e-20);
+}
+
+TEST(splitruns, interpolate)
+{
+    constexpr unsigned K = 355;
+    constexpr double Tobs = 32;
+
+    std::cout << std::setprecision(15);
+    double F71 = runs_split_cumulative(Tobs, 71, 5);
+    double F88 = runs_split_cumulative(Tobs, 88, 4);
+    double F89 = runs_split_cumulative(Tobs, 89, 4);
+    double F100 = runs_split_cumulative(Tobs, 100, 3.55);
+    std::cout << "F(32|5*71) = " << F71 << std::endl;
+    std::cout << "1/3 F(32|4*88) + 3/4 F(32|4*89) = " << (F88 + 3*F89)/4 << std::endl;
+    std::cout << "F(32|3.55*100) = " << F100 << std::endl;
+    EXPECT_NEAR(F71, F100, 1e-9);
+    EXPECT_NEAR(F71,(F88 + 3*F89)/4, 1e-9);
 }
