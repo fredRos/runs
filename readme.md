@@ -138,8 +138,14 @@ runs_split_pvalue(Tobs, N, n);
 ```
 
 The approximation involves a 1D numerical integral, the relative and absolute
-target precision can be set as additional arguments, for the exact meaning of
-these parameters see the
+target precision can be set as additional arguments, for example
+
+```c++
+runs_split_cumulative(Tobs, N, n, epsrel, epsabs)
+```
+
+For the exact meaning of these parameters consult
+the
 [GSL manual](https://www.gnu.org/software/gsl/manual/html_node/Numerical-Integration-Introduction.html).
 
 build instructions
