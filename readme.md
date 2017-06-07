@@ -123,6 +123,20 @@ large `N>50` scales linearly with the number of physical cores and
 even benefits from hyperthreading. We tested on Intel Core i7-4600U
 with gcc4.9 and Intel Core i7-4770 with gcc 5.4.
 
+### split runs
+
+For large `N`, the number of terms in the exact expressions scales like
+`exp(N)/N` and quickly grows too large. We implement an approximate formula for
+`n*N`, where for example `N = 100` is computed exactly and `n` may be 1 or >>
+`N`.
+
+```c++
+#include "splitruns.h"
+
+runs_split_cumulative(Tobs, N, n);
+runs_split_pvalue(Tobs, N, n);
+```
+
 build instructions
 ------------------
 
