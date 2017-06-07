@@ -7,9 +7,14 @@ set(BUILD_SHARED_LIBS True)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 find_package(GSL REQUIRED)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
+# set(CMAKE_CXX_STANDARD 11)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -g -O3 -march=native")
   add_compile_options(-std=c++11)
+else()
+  message(FATAL_ERROR "Unsupported compiler ${CMAKE_CXX_COMPILER_ID}")
 endif()
 
 find_package(OpenMP)
