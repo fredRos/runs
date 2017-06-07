@@ -141,7 +141,7 @@ building the first time.
 
 To specify where the library and headers should be installed, use
 
-    cmake -DCMAKE_INSTALL_PREFIX=/path/to/installation ..
+    cmake -DCMAKE_INSTALL_PREFIX=/tmp/runs ..
 
 To install
 
@@ -149,17 +149,18 @@ To install
 
 To link to this in your own code, just link to the library and include
 the headers from whereever you chose to install them. For example if
-you installed to `/tmp`, compile and link your code in `runstest.cxx`
+you installed to `/tmp/runs/`, compile, link, and run your code in `runstest.cxx`
 
 ``` c++
 #include "pvalue.h"
+#include <iostream>
 
 int main()
 {
     double Tobs = 3.3;
     unsigned N = 10;
-    runs_cumulative(Tobs, N);
-    runs_pvalue(Tobs, N);
+    std::cout << "F(Tobs = " << Tobs << " | N = " << N << ") = "
+              << runs_cumulative(Tobs, N) << std::endl;
 
     return 0;
 }
@@ -167,7 +168,13 @@ int main()
 
 like this
 
-    g++ -fopenmp runstest.cxx -I/tmp/include -L/tmp/lib -lruns -lgsl -lblas
+    export LD_LIBRARY_PATH=/tmp/runs/lib/
+
+    # with openmp: gcc >= 4.2, clang >= 3.8
+    g++ -fopenmp runstest.cxx -I/tmp/runs/include -L/tmp/runs/lib -lruns -lgsl -lblas && ./a.out
+
+    # without openmp: usually on a mac
+    g++ runstest.cxx -I/tmp/runs/include -L/tmp/runs/lib -lruns -lgsl -lblas && ./a.out
 
 citing
 ------
