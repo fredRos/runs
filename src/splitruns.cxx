@@ -76,7 +76,7 @@ double Delta(const double Tobs, const unsigned N, double epsrel, double epsabs)
 double runs_split_cumulative(const double Tobs, const unsigned N, const double n, double epsrel, double epsabs)
 {
     const double F = runs_cumulative(Tobs, N);
-    return pow(F, n) / (1 + (n-1) * Delta(Tobs, N, epsrel, epsabs));
+    return F * pow(F / (1 + Delta(Tobs, N, epsrel, epsabs)), n-1);
 }
 
 double runs_split_pvalue(const double Tobs, const unsigned N, const double n, double epsrel, double epsabs)
