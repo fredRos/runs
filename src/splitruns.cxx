@@ -18,9 +18,6 @@ namespace {
 
 double h(const double chisq, const unsigned N)
 {
-    // // to avoid overflow
-    // assert(N < 64);
-
     double res = 0;
     double weight = 0.5;
     for (auto i = 1u; i <= N; ++i) {
@@ -34,9 +31,6 @@ double h(const double chisq, const unsigned N)
 
 double H(const double a, const double b, const unsigned N)
 {
-    // // to avoid overflow
-    // assert(N < 64);
-
     double res = 0;
     double weight = 0.5;
     for (auto i = 1u; i <= N; ++i) {

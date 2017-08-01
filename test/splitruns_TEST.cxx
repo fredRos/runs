@@ -56,14 +56,13 @@ TEST(splitruns, long)
     // just use gtest to measure the time
     constexpr double Tobs = 32;
     constexpr unsigned N = 60;
-    constexpr unsigned n = 5;
+    // constexpr unsigned n = 5;
     // runs_split_cumulative(Tobs, N, n, 1e-13, 1e-20);
     Delta(Tobs, N, 1e-4, 1e-20);
 }
 
 TEST(splitruns, interpolate)
 {
-    constexpr unsigned K = 355;
     constexpr double Tobs = 32;
 
     std::cout << std::setprecision(15);
