@@ -77,3 +77,10 @@ TEST(splitruns, interpolate)
     EXPECT_NEAR(F71, F100, 3e-9);
     EXPECT_NEAR(F71,(F88 + 3*F89)/4, 2e-9);
 }
+
+TEST(splitruns, bound_error)
+{
+    // the true correction is bounded by scaling by F(T) and F(2T)
+    constexpr double Tobs = 8;
+    EXPECT_NEAR(runs_cumulative(Tobs, 100), pow(runs_cumulative(Tobs, 50), 2) - runs_cumulative(1*Tobs, 100) * Delta(Tobs, 100), 1e-3);
+}
