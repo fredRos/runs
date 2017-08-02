@@ -21,3 +21,13 @@ TEST(pvalue_test, mathematica)
     for (auto t = T.begin(), p = P.begin(), e=eps.begin(); t != T.end(); ++t, ++p, ++e)
         EXPECT_NEAR(runs_pvalue(*t, n), *p, *e);
 }
+
+TEST(pvalue_test, critical)
+{
+    constexpr double alpha = 0.001;
+    constexpr unsigned N = 50;
+    // EXPECT_NEAR(runs_pvalue(23.758, N),  alpha, 1e-10);
+    // EXPECT_NEAR(runs_pvalue(25.753, 2*N), alpha, 1e-10);
+    EXPECT_NEAR(runs_pvalue(19.645, 2*N), 0.01, 3e-5);
+    EXPECT_NEAR(runs_pvalue(15.34, 2*N), 0.05, 1e-4);
+}
