@@ -33,5 +33,17 @@ double runs_split_pvalue(const double Tobs, const unsigned N, const double n, do
  */
 double Delta(const double Tobs, const unsigned Nl, const unsigned Nr, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
 
+/**
+ * Compute full correction w/o factoring out the cumulative.
+ *
+ * The 2D numerical integral is done by hcubature, which interprets
+ * the relative and absolute precision `epsrel` and
+ * `epsabs`. Expensive calls to `runs_cumulative` can be done once up
+ * front and in the 2D integration, a linear interpolation is used in
+ * place of `runs_cumulative` if the number of interpolation points
+ * `ninterp >= 2`.
+ */
+double full_correction(const double Tobs, const unsigned Nl, const unsigned Nr, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs, unsigned ninterp=0);
+
 double h(const double chisq, const unsigned N);
 double H(const double a, const double b, const unsigned N);

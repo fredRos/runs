@@ -84,3 +84,23 @@ TEST(splitruns, bound_error)
     constexpr double Tobs = 8;
     EXPECT_NEAR(runs_cumulative(Tobs, 100), pow(runs_cumulative(Tobs, 50), 2) - runs_cumulative(1*Tobs, 100) * Delta(Tobs, 100, 100), 1e-3);
 }
+
+TEST(splitruns, 2dcorrection)
+{
+    constexpr double Tobs = 15.5;
+    constexpr unsigned N = 20;
+    const auto corr = full_correction(Tobs, N, N, 1e-7, 0.0, 20);
+
+    // compare to mathematica when cumulative is ignored
+    // EXPECT_NEAR(corr, 0.00175994, 1e-6);
+
+    // the true result should lie within the bounds
+    const auto delta = Delta(Tobs, N, N);
+    const auto lo = runs_cumulative(Tobs, 2*N) * delta;
+    const auto hi = runs_cumulative(2*Tobs, 2*N) * delta;
+
+    std::cout << "lo = " << lo << ", full corr  = " << corr << ", hi = " << hi  << std::endl;
+
+    EXPECT_LE(lo, corr);
+    EXPECT_LE(corr, hi);
+}
