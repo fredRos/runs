@@ -10,7 +10,7 @@ TEST(splitruns, split)
     constexpr unsigned n = 2;
 
     const double F = runs_cumulative(Tobs, N);
-    const double approx = F*F / (1.0 + Delta(Tobs, N));
+    const double approx = F*F / (1.0 + Delta(Tobs, N, N));
 
     EXPECT_NEAR(approx, runs_split_cumulative(Tobs, N, n), 1e-15);
 }
@@ -44,7 +44,7 @@ TEST(splitruns, hH)
     // compare to mathematica
     EXPECT_NEAR(h(Tobs, N), 0.000373964, 1e-8);
     EXPECT_NEAR(H(Tobs-x, Tobs, N), 0.00245352, 1e-8);
-    EXPECT_NEAR(Delta(Tobs, N), 0.00175994, 1e-8);
+    EXPECT_NEAR(Delta(Tobs, N, N), 0.00175994, 1e-8);
 }
 
 TEST(splitruns, cdf)
@@ -59,7 +59,7 @@ TEST(splitruns, long)
     constexpr unsigned N = 60;
     // constexpr unsigned n = 5;
     // runs_split_cumulative(Tobs, N, n, 1e-13, 1e-20);
-    Delta(Tobs, N, 1e-4, 1e-20);
+    Delta(Tobs, N, N, 1e-4, 1e-20);
 }
 
 TEST(splitruns, interpolate)

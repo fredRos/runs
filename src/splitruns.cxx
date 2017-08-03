@@ -12,7 +12,7 @@ namespace {
     struct IntegrandData
     {
         double Tobs;
-        unsigned N;
+        unsigned Nl, Nr;
     };
 }
 
@@ -46,10 +46,10 @@ double integrand(double x, void* params)
 {
     const IntegrandData & d = *static_cast<IntegrandData*>(params);
 
-    return h(x, d.N) * H(d.Tobs - x, d.Tobs, d.N);
+    return h(x, d.Nl) * H(d.Tobs - x, d.Tobs, d.Nr);
 }
 
-double Delta(const double Tobs, const unsigned N, double epsrel, double epsabs)
+double Delta(const double Tobs, const unsigned Nl, const unsigned Nr, double epsrel, double epsabs)
 {
     // gsl numerical integration
     constexpr size_t limit = 1000;
@@ -59,7 +59,7 @@ double Delta(const double Tobs, const unsigned N, double epsrel, double epsabs)
 
     gsl_function F;
     F.function = &integrand;
-    ::IntegrandData data{Tobs, N};
+    ::IntegrandData data{Tobs, Nl, Nr};
     F.params = &data;
 
     gsl_integration_qag(&F, 0, Tobs, epsabs, epsrel, limit, GSL_INTEG_GAUSS21, w, &result, &error);

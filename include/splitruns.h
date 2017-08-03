@@ -31,7 +31,7 @@ double runs_split_pvalue(const double Tobs, const unsigned N, const double n, do
 /**
  * Compute \Delta correction term.
  */
-double Delta(const double Tobs, const unsigned N, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
+double Delta(const double Tobs, const unsigned Nl, const unsigned Nr, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
 
 double h(const double chisq, const unsigned N);
 double H(const double a, const double b, const unsigned N);
