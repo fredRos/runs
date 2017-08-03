@@ -20,6 +20,7 @@ ExternalProject_Add(googletest
     PREFIX "${CMAKE_CURRENT_BINARY_DIR}"
     # Disable install step
     INSTALL_COMMAND ""
+    UPDATE_DISCONNECTED 1
     )
 
 # Specify include dir
@@ -29,6 +30,3 @@ set(GTEST_INCLUDE_DIRS ${source_dir}/googletest/include PARENT_SCOPE)
 # Specify MainTest's link libraries
 ExternalProject_Get_Property(googletest binary_dir)
 set(GTEST_LIBS_DIR ${binary_dir}/googlemock/gtest PARENT_SCOPE)
-
-
-
