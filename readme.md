@@ -108,8 +108,7 @@ Ignore the first element `c[0], y[0]` and do not read beyond
 `Tobs` denotes the value of the runs test statistic; i.e., the largest
 `\chi^2` of any run of consecutive successes (above expectation) in a
 sequence of `N` independent trials with Gaussian uncertainty. Then the
-cumulative distribution `P(T < Tobs | N)` and the p value `P(T >= Tobs
-| N)` are available as
+cumulative distribution `P(T < Tobs | N)` and the p value `P(T >= Tobs| N)` are available as
 
 ``` c++
 include "pvalue.h"
@@ -126,9 +125,8 @@ with gcc4.9 and Intel Core i7-4770 with gcc 5.4.
 ### split runs
 
 For large `N`, the number of terms in the exact expressions scales like
-`exp(N)/N` and quickly grows too large. We implement an approximate formula for
-`n*N`, where for example `N = 100` is computed exactly and `n` may be 1 or >>
-`N`.
+`exp(sqrt(N))/N` and quickly grows too large. We implement an approximate formula for
+`n*N`, where for example `N = 100` is computed exactly and `n` is >= 2.
 
 ```c++
 #include "splitruns.h"
@@ -217,3 +215,10 @@ reference.
     year={2011},
     publisher={Elsevier}
     }
+
+license
+-------
+
+The code is released under the MIT license, see the `LICENSE` file. It comes
+bundled with parts of the [cubature](https://github.com/stevengj/cubature)
+package that is under the GPLv3.
