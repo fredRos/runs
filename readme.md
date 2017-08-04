@@ -199,6 +199,21 @@ like this
     # without openmp: usually on a mac
     g++ runstest.cxx -I/tmp/runs/include -L/tmp/runs/lib -lruns -lgsl -lblas && ./a.out
 
+testing
+-------
+
+In the `build` directory, call
+
+    ./runs_test
+
+To select individual tests
+
+    ./runs_test --gtest_filter='splitruns.*'
+
+Help on available options
+
+    build/runs_test -h
+
 citing
 ------
 
