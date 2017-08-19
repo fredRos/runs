@@ -7,7 +7,7 @@ dist: trusty
 
 env:
   global:
-    - OMP_NUM_THREADS=2
+    - OMP_NUM_THREADS=4
 
 addons:
   apt:
