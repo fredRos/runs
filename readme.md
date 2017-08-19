@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/87222105.svg)](https://zenodo.org/badge/latestdoi/87222105)
+
 Runs
 ====
 
