@@ -125,8 +125,9 @@ with gcc4.9 and Intel Core i7-4770 with gcc 5.4.
 ### split runs
 
 For large `N`, the number of terms in the exact expressions scales like
-`exp(sqrt(N))/N` and quickly grows too large. We implement an approximate formula for
-`n*N`, where for example `N = 100` is computed exactly and `n` is >= 2.
+`exp(N^1/2)/N` and quickly grows too large. We implement an approximate formula for
+`n*N`, where for example `N = 100` is computed exactly and `n` may be 1 or >>
+`N` and need not even be an integer.
 
 ```c++
 #include "splitruns.h"
