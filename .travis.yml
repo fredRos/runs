@@ -18,7 +18,7 @@ compiler:
   - gcc
 
 script:
-  -mkdir build
-  -cd build
+  - mkdir build
+  - cd build
   - cmake .. && make
   - ./runs_test
