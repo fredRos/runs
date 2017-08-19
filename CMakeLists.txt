@@ -48,8 +48,6 @@ set(PROJECT_LIB_NAME ${PROJECT_NAME_STR})
 
 include_directories(${COMMON_INCLUDES})
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
-# list(APPEND SRC_FILES src/hcubature.c)
-message("${SRC_FILES}")
 file(GLOB HEADER_FILES ${COMMON_INCLUDES}/*.h)
 add_library(${PROJECT_LIB_NAME} ${SRC_FILES})
 target_link_libraries(${PROJECT_LIB_NAME} ${GSL_LIBRARIES})
