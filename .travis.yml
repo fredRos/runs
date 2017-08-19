@@ -12,7 +12,7 @@ env:
 addons:
   apt:
     packages:
-      - libgsl-dev
+      - libgsl0-dev
 
 compiler:
   - gcc
