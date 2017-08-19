@@ -1,0 +1,24 @@
+language: cpp
+
+# container based has faster start up
+sudo: false
+
+dist: trusty
+
+env:
+  global:
+    - OMP_NUM_THREADS=2
+
+addons:
+  apt:
+    packages:
+      - libgsl-dev
+
+compiler:
+  - gcc
+
+script:
+  -mkdir build
+  -cd build
+  - cmake .. && make
+  - ./runs_test
