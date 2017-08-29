@@ -104,3 +104,11 @@ TEST(splitruns, 2dcorrection)
     EXPECT_LE(lo, corr);
     EXPECT_LE(corr, hi);
 }
+
+TEST(splitruns, paper_timing)
+{
+    constexpr double Tobs = 15.8;
+    constexpr unsigned N = 96;
+    // don't care about result, just want to measure the time
+    runs_pvalue(Tobs, N);
+}

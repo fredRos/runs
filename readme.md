@@ -217,6 +217,25 @@ Help on available options
 
     build/runs_test -h
 
+strong scaling
+-------
+
+The C++ implementation of `runs_cumulative` and thus `runs_pvalue` benefits from
+hyperthreading. On an Intel Core i7-4770 with four cores and a maximum frequency
+of 3.4 GHz with gcc 5.4 and default build options, we observed the following run
+times for the unit test `OMP_NUM_THREADS=n ./runs_test
+--gtest_filter=splitruns.paper_timing` that computes `runs_pvalue(T, N=96)`
+
+|     n |     time / ms |     speed up |
+| :---: | :-----------: | :----------: |
+|     1 |          9400 |            1 |
+|     2 |          4750 |            2 |
+|     4 |          2450 |          3.8 |
+|     8 |          1750 |          5.4 |
+
+This is a nice example where hyperthreading brings a noticeable improvement
+beyond the number of physical cores.
+
 citing
 ------
 
