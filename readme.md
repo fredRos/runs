@@ -6,10 +6,12 @@ Runs
 This project contains a mathematica and a C++ implementation of the
 distribution of the runs statistic defined in
 
-Frederik Beaujean and Allen Caldwell. “A Test Statistic for Weighted
-Runs.” Journal of Statistical Planning and Inference 141, no. 11
+Frederik Beaujean and Allen Caldwell. _A Test Statistic for Weighted
+Runs._ Journal of Statistical Planning and Inference 141, no. 11
 (November 2011):
-3437–46. [doi:10.1016/j.jspi.2011.04.022](http://dx.doi.org/10.1016/j.jspi.2011.04.022) [arXiv:1005.3233](http://arxiv.org/abs/1005.3233).
+3437–46. [doi:10.1016/j.jspi.2011.04.022](http://dx.doi.org/10.1016/j.jspi.2011.04.022) [arXiv:1005.3233](http://arxiv.org/abs/1005.3233)
+
+Frederik Beaujean and Allen Caldwell. _Is the bump significant? An axion-search example_ [arXiv:1710.06642](http://arxiv.org/abs/1710.06642)
 
 mathematica
 ------------
