@@ -2,6 +2,7 @@
 #include "pvalue.h"
 #include "gtest/gtest.h"
 #include <gsl/gsl_cdf.h>
+#include <cmath>
 
 TEST(splitruns, split)
 {
@@ -82,7 +83,7 @@ TEST(splitruns, bound_error)
 {
     // the true correction is bounded by scaling by F(T) and F(2T)
     constexpr double Tobs = 8;
-    EXPECT_NEAR(runs_cumulative(Tobs, 100), pow(runs_cumulative(Tobs, 50), 2) - runs_cumulative(1*Tobs, 100) * Delta(Tobs, 100, 100), 1e-3);
+    EXPECT_NEAR(runs_cumulative(Tobs, 100), std::pow(runs_cumulative(Tobs, 50), 2) - runs_cumulative(1*Tobs, 100) * Delta(Tobs, 100, 100), 1e-3);
 }
 
 TEST(splitruns, 2dcorrection)
