@@ -69,8 +69,10 @@ I made the necessary modifications to partition `n` into exactly `k`
 parts as well. Some simple examples
 
 ``` c++
-#include <partition.h>
+#include <partitions.h>
 #include <iostream>
+
+using namespace partitions;
 
 // print all partitions of 6 into any number of parts
 for (PartitionGenerator gen(6); gen; ++gen)
@@ -112,21 +114,21 @@ In the code, this becomes
 Ignore the first element `c[0], y[0]` and do not read beyond
 `c[h],y[h]`!
 
-### runs statistics
+### SQUARES statistic
 
-`Tobs` denotes the value of the runs test statistic; i.e., the largest
+`Tobs` denotes the value of the SQUARES test statistic; i.e., the largest
 `\chi^2` of any run of consecutive successes (above expectation) in a
 sequence of `N` independent trials with Gaussian uncertainty. Then the
 cumulative distribution `P(T < Tobs | N)` and the p value `P(T >= Tobs| N)` are available as
 
 ``` c++
-include "pvalue.h"
+include "squares.h"
 
-runs_cumulative(Tobs, N);
-runs_pvalue(Tobs, N);
+squares::cumulative(Tobs, N);
+squares::pvalue(Tobs, N);
 ```
 
-`openMP` helps as the speed-up of evaluating `runs_cumulative` for
+`openMP` helps as the speed-up of evaluating `squares::cumulative` for
 large `N>50` scales linearly with the number of physical cores and
 even benefits from hyperthreading. 
 
@@ -138,17 +140,17 @@ For large `N`, the number of terms in the exact expressions scales like
 `N` and need not even be an integer.
 
 ```c++
-#include "splitruns.h"
+#include "squares_approx.h"
 
-runs_split_cumulative(Tobs, N, n);
-runs_split_pvalue(Tobs, N, n);
+squares::approx_cumulative(Tobs, N, n);
+squares::approx_pvalue(Tobs, N, n);
 ```
 
 The approximation involves a 1D numerical integration whose relative and absolute
 target precision can be set as additional arguments, for example
 
 ```c++
-runs_split_cumulative(Tobs, N, n, epsrel, epsabs)
+approx_cumulative(Tobs, N, n, epsrel, epsabs)
 ```
 
 For the exact meaning of these parameters consult
@@ -184,7 +186,7 @@ the headers from whereever you chose to install them. For example if
 you installed to `/tmp/runs/`, compile, link, and run your code in `runstest.cxx`
 
 ``` c++
-#include "pvalue.h"
+#include "squares.h"
 #include <iostream>
 
 int main()
@@ -192,7 +194,7 @@ int main()
     double Tobs = 3.3;
     unsigned N = 10;
     std::cout << "F(Tobs = " << Tobs << " | N = " << N << ") = "
-              << runs_cumulative(Tobs, N) << std::endl;
+              << squares::cumulative(Tobs, N) << std::endl;
 
     return 0;
 }
@@ -226,11 +228,11 @@ Help on available options
 strong scaling
 -------
 
-The C++ implementation of `runs_cumulative` and thus `runs_pvalue` benefits from
+The C++ implementation of `squares::cumulative` and thus `squares::pvalue` benefits from
 hyperthreading. On an Intel Core i7-4770 with four cores and a maximum frequency
 of 3.4 GHz with gcc 5.4 and release mode, we observed the following run
 times for the unit test `OMP_NUM_THREADS=n ./runs_test
---gtest_filter=splitruns.paper_timing` that computes `runs_pvalue(T, N=96)`
+--gtest_filter=splitruns.paper_timing` that computes `squares::pvalue(T, N=96)`
 
 |     n |     time / ms |     speed up |
 | :---: | :-----------: | :----------: |

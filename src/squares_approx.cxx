@@ -1,5 +1,5 @@
-#include "splitruns.h"
-#include "pvalue.h"
+#include "squares_approx.h"
+#include "squares.h"
 
 #include "cubature.h"
 
@@ -31,11 +31,15 @@ namespace {
     };
 }
 
+namespace squares
+{
+
 double h(const double chisq, const unsigned N)
 {
     double res = 0;
     double weight = 0.5;
-    for (auto i = 1u; i <= N; ++i) {
+    for (auto i = 1u; i <= N; ++i)
+    {
         if (i < N)
             weight *= 0.5;
         res += weight * gsl_ran_chisq_pdf(chisq, i);
@@ -48,7 +52,8 @@ double H(const double a, const double b, const unsigned N)
 {
     double res = 0;
     double weight = 0.5;
-    for (auto i = 1u; i <= N; ++i) {
+    for (auto i = 1u; i <= N; ++i)
+    {
         if (i < N)
             weight *= 0.5;
         res += weight * (gsl_cdf_chisq_P(b, i) - gsl_cdf_chisq_P(a, i));
@@ -57,9 +62,9 @@ double H(const double a, const double b, const unsigned N)
     return res;
 }
 
-double gsl_integrand(double x, void* params)
+double gsl_integrand(double x, void *params)
 {
-    const IntegrandData & d = *static_cast<IntegrandData*>(params);
+    const IntegrandData &d = *static_cast<IntegrandData *>(params);
 
     return h(x, d.Nl) * H(d.Tobs - x, d.Tobs, d.Nr);
 }
@@ -68,7 +73,7 @@ double Delta(const double Tobs, const unsigned Nl, const unsigned Nr, double eps
 {
     // gsl numerical integration
     constexpr size_t limit = 1000;
-    gsl_integration_workspace * w = gsl_integration_workspace_alloc(limit);
+    gsl_integration_workspace *w = gsl_integration_workspace_alloc(limit);
 
     double result, error;
 
@@ -83,40 +88,46 @@ double Delta(const double Tobs, const unsigned Nl, const unsigned Nr, double eps
     // printf ("estimated error = % .6e\n", error);
     // printf ("intervals       = %zu\n", w->size);
 
-    gsl_integration_workspace_free (w);
+    gsl_integration_workspace_free(w);
 
     return result;
 }
 
-int cubature_integrand(unsigned /*ndim*/, const double *uv, void* data, unsigned /*fdim*/, double *fval)
+int cubature_integrand(unsigned /*ndim*/, const double *uv, void *data, unsigned /*fdim*/, double *fval)
 {
-    CubaIntegrandData & d = *static_cast<CubaIntegrandData*>(data);
+    CubaIntegrandData &d = *static_cast<CubaIntegrandData *>(data);
     ++d.counter;
 
     /*  transform from unit square to triangle with vertices (Tobs, Tobs), (Tobs, 0), (0, Tobs)  */
     const auto u = uv[0];
     const auto v = uv[1];
-    const auto x = d.Tobs*u*(1 - v) + d.Tobs*(1-u);
-    const auto y = d.Tobs*u*v       + d.Tobs*(1-u);
+    const auto x = d.Tobs * u * (1 - v) + d.Tobs * (1 - u);
+    const auto y = d.Tobs * u * v + d.Tobs * (1 - u);
     const auto jac = d.Tobs * d.Tobs * u;
 
     *fval = jac * h(x, d.Nl) * h(y, d.Nr);
-    *fval *= (d.spline && d.acc) ? gsl_spline_eval(d.spline, x+y, d.acc) : runs_cumulative(d.Tobs, d.Nl+d.Nr);
+    *fval *= (d.spline && d.acc) ? gsl_spline_eval(d.spline, x + y, d.acc) : cumulative(d.Tobs, d.Nl + d.Nr);
 
     return 0;
 }
 
-double full_correction(const double Tobs, const unsigned Nl, const unsigned Nr, double epsrel, double epsabs, unsigned ninterp)
+double full_correction(const double Tobs,
+                       const unsigned Nl,
+                       const unsigned Nr,
+                       double epsrel,
+                       double epsabs,
+                       unsigned ninterp)
 {
     ::CubaIntegrandData data{Tobs, Nl, Nr, 0, nullptr, nullptr};
 
-     /* evaluate F on a grid (Tobs, ..., 2*Tobs) for interpolation */
+    /* evaluate F on a grid (Tobs, ..., 2*Tobs) for interpolation */
     gsl_interp_accel *acc = nullptr;
-    gsl_spline* spline = nullptr;
-    double* x = nullptr;
-    double* y = nullptr;
+    gsl_spline *spline = nullptr;
+    double *x = nullptr;
+    double *y = nullptr;
 
-    if (ninterp >= 2) {
+    if (ninterp >= 2)
+    {
         acc = gsl_interp_accel_alloc();
         // gsl_interp_steffen would be differentiable at grid points but is only available in newer versions of the GSL. We want monotonicity because if F is, too
         spline = gsl_spline_alloc(gsl_interp_linear, ninterp);
@@ -124,9 +135,10 @@ double full_correction(const double Tobs, const unsigned Nl, const unsigned Nr, 
         x = new double[ninterp];
         y = new double[ninterp];
 
-        for (auto i=0u; i < ninterp; ++i) {
-            x[i] = Tobs + i*Tobs/(ninterp-1);
-            y[i] = runs_cumulative(x[i], Nl+Nr);
+        for (auto i = 0u; i < ninterp; ++i)
+        {
+            x[i] = Tobs + i * Tobs / (ninterp - 1);
+            y[i] = cumulative(x[i], Nl + Nr);
         }
 
         gsl_spline_init(spline, x, y, ninterp);
@@ -143,7 +155,7 @@ double full_correction(const double Tobs, const unsigned Nl, const unsigned Nr, 
     double err;
 
     if (hcubature(fdim, cubature_integrand, &data, dim, uvmin, uvmax,
-                   maxEval, epsabs, epsrel, ERROR_L2, &res, &err))
+                  maxEval, epsabs, epsrel, ERROR_L2, &res, &err))
     {
         throw std::runtime_error("hcubature failed");
     }
@@ -157,14 +169,16 @@ double full_correction(const double Tobs, const unsigned Nl, const unsigned Nr, 
     return res;
 }
 
-double runs_split_cumulative(const double Tobs, const unsigned N, const double n, double epsrel, double epsabs)
+double approx_cumulative(const double Tobs, const unsigned N, const double n, double epsrel, double epsabs)
 {
-    const auto F = runs_cumulative(Tobs, N);
-    const auto Fn1 = pow(F / (1 + Delta(Tobs, N, N, epsrel, epsabs)), n-1);
+    const auto F = cumulative(Tobs, N);
+    const auto Fn1 = pow(F / (1 + Delta(Tobs, N, N, epsrel, epsabs)), n - 1);
     return F * Fn1;
 }
 
-double runs_split_pvalue(const double Tobs, const unsigned N, const double n, double epsrel, double epsabs)
+double approx_pvalue(const double Tobs, const unsigned N, const double n, double epsrel, double epsabs)
 {
-    return 1-runs_split_cumulative(Tobs, N, n, epsrel, epsabs);
+    return 1 - approx_cumulative(Tobs, N, n, epsrel, epsabs);
+}
+
 }

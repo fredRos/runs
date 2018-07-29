@@ -1,6 +1,6 @@
 // Copyright 2018 Frederik Beaujean <beaujean@mpp.mpg.de>
 
-#include "pvalue.h"
+#include "squares.h"
 #include "partitions.h"
 
 #include <gsl/gsl_cdf.h>
@@ -8,8 +8,6 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-
-using namespace std;
 
 // use ldouble for higher precision when adding lots of numbers
 using ldouble = long double;
@@ -54,7 +52,10 @@ std::vector<ldouble> CacheChi2(double Tobs, unsigned N)
 
 } // namespace
 
-double runs_cumulative(const double Tobs, const unsigned N)
+namespace squares
+{
+
+double cumulative(const double Tobs, const unsigned N)
 {
     CacheFactorials(N);
 
@@ -65,7 +66,7 @@ double runs_cumulative(const double Tobs, const unsigned N)
     // factorial, and the exponential. Use natural log
     ldouble poch = 0;
     // log(2^N-1): bit shift if N small enough, else neglect -1
-    const ldouble logpow2N1 = (N<=63)? log((1ul << N) - 1) : N*log(2);
+    const ldouble logpow2N1 = (N <= 63) ? log((1ul << N) - 1) : N * log(2);
 
     // the p value
     ldouble p = 0;
@@ -74,14 +75,16 @@ double runs_cumulative(const double Tobs, const unsigned N)
 // part(r, M) is really different, each iteration can vary in time
 // very much. Hyperthreading seemed to help a lot on my Intel K4770.
 #pragma omp parallel for schedule(dynamic) private(poch) shared(log_cumulative, log_factorial) reduction(+:p)
-    for (auto r=1ul; r <= N; ++r) {
+    for (auto r = 1ul; r <= N; ++r)
+    {
         // const unsigned long Mmax = (r <= N-r+1)? r : N-r+1;
-        const auto Mmax = min(r, N-r+1);
+        const auto Mmax = std::min(r, N - r + 1);
         poch = 0;
-        for (auto M=1ul; M <= Mmax; ++M) {
-          // compute Pochhammer iteratively
+        for (auto M = 1ul; M <= Mmax; ++M)
+        {
+            // compute Pochhammer iteratively
             // (...)_{M+1}/ (...)_M = N-r+1-M but to start the iteration we have to add 1
-            poch += log(ldouble(N-r+2-M));
+            poch += log(ldouble(N - r + 2 - M));
 
             // this factor is independent of the actual partition,
             // only depends on M,r,N
@@ -91,17 +94,19 @@ double runs_cumulative(const double Tobs, const unsigned N)
             ldouble ppi = 0;
 
             // visit all partitions, save ref to partition
-            KPartitionGenerator g(r, M);
-            auto& n = g->mult();
-            auto& y = g->parts();
+            partitions::KPartitionGenerator g(r, M);
+            auto &n = g->mult();
+            auto &y = g->parts();
 
-            for (; g; ++g) {
+            for (; g; ++g)
+            {
                 const auto h = g->distinct_parts();
 
                 // perform sum on log scale within a partition
                 ldouble ppartition = 0;
 
-                for (size_t l = 1; l <= h; ++l) {
+                for (size_t l = 1; l <= h; ++l)
+                {
                     ppartition += n[l] * log_cumulative[y[l]] - ::log_factorial[n[l]];
                 }
                 ppi += exp(ppartition);
@@ -116,7 +121,9 @@ double runs_cumulative(const double Tobs, const unsigned N)
     return p;
 }
 
-double runs_pvalue(const double Tobs, const unsigned N)
+double pvalue(const double Tobs, const unsigned N)
 {
-    return 1 - runs_cumulative(Tobs, N);
+    return 1 - cumulative(Tobs, N);
 }
+
+} // namespace squares

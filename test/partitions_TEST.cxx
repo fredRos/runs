@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+using namespace partitions;
+
 template<class G>
 void check(G& g, std::initializer_list<Int_t> c, std::initializer_list<Int_t> y)
 {

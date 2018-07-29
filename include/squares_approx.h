@@ -19,19 +19,34 @@
 // SOFTWARE.
 #pragma once
 
-constexpr double splitruns_epsrel = 1e-10;
-constexpr double splitruns_epsabs = 1e-15;
+namespace squares
+{
+
+constexpr double EPSREL = 1e-10;
+constexpr double EPSABS = 1e-15;
 
 /**
  * F(Tobs | n*N). Evaluates F(Tobs | N) exactly, then approximates.
  */
-double runs_split_cumulative(const double Tobs, const unsigned N, const double n, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
-double runs_split_pvalue(const double Tobs, const unsigned N, const double n, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
+double approx_cumulative(const double Tobs,
+                         const unsigned N,
+                         const double n,
+                         double epsrel = EPSREL,
+                         double epsabs = EPSABS);
+double approx_pvalue(const double Tobs,
+                     const unsigned N,
+                     const double n,
+                     double epsrel = EPSREL,
+                     double epsabs = EPSABS);
 
 /**
  * Compute \Delta correction term.
  */
-double Delta(const double Tobs, const unsigned Nl, const unsigned Nr, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs);
+double Delta(const double Tobs,
+             const unsigned Nl,
+             const unsigned Nr,
+             double epsrel = EPSREL,
+             double epsabs = EPSABS);
 
 /**
  * Compute full correction w/o factoring out the cumulative.
@@ -43,7 +58,14 @@ double Delta(const double Tobs, const unsigned Nl, const unsigned Nr, double eps
  * place of `runs_cumulative` if the number of interpolation points
  * `ninterp >= 2`.
  */
-double full_correction(const double Tobs, const unsigned Nl, const unsigned Nr, double epsrel=splitruns_epsrel, double epsabs=splitruns_epsabs, unsigned ninterp=0);
+double full_correction(const double Tobs,
+                       const unsigned Nl,
+                       const unsigned Nr,
+                       double epsrel = EPSREL,
+                       double epsabs = EPSABS,
+                       unsigned ninterp = 0);
 
 double h(const double chisq, const unsigned N);
 double H(const double a, const double b, const unsigned N);
+
+}

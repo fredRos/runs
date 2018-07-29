@@ -23,30 +23,37 @@
 #include <iterator>
 #include <vector>
 
+namespace partitions
+{
+
 using UInt_t = unsigned;
 using Int_t = int;
 using vec = std::vector<Int_t>;
 
 /*!
- * Represent a partition of a positive number in multiplicity representation.
+ * Represent a partition of a positive number `n` in multiplicity representation.
 */
 class Partition
 {
-public:
-    Partition(UInt_t n);
-    Partition(UInt_t n, UInt_t k);
-    Partition& operator++();
-    bool operator==(const Partition&) const;
-    const vec& mult() const { return c; }
-    const vec& parts() const { return y; }
-    const UInt_t& distinct_parts() const { return h; }
-    UInt_t number() const { return n; }
+ public:
+  Partition(UInt_t n);
+  Partition(UInt_t n, UInt_t k);
+  Partition &operator++();
+  bool operator==(const Partition &) const;
+  const vec &mult() const noexcept
+  { return c; }
+  const vec &parts() const noexcept
+  { return y; }
+  const UInt_t &distinct_parts() const noexcept
+  { return h; }
+  UInt_t number() const noexcept
+  { return n; }
 
-private:
-    vec c;     /// multiplicity
-    vec y;     /// part
-    const UInt_t n; /// Partition of n
-    UInt_t h;  /// number of distinct parts
+ private:
+  vec c;     /// multiplicity
+  vec y;     /// part
+  const UInt_t n; /// Partition of n
+  UInt_t h;  /// number of distinct parts
 };
 
 /*!
@@ -76,48 +83,52 @@ private:
  */
 class AbstractPartitionGenerator : public std::iterator<std::input_iterator_tag, Partition>
 {
-public:
-    explicit operator bool() const { return !done; }
+ public:
+  explicit operator bool() const
+  { return !done; }
 
-    // We are happy with most default types for std::iterator but we
-    // don't want the caller to modify a partition
-    using reference = value_type const&;
-    using pointer = value_type const*;
+  // We are happy with most default types for std::iterator but we
+  // don't want the caller to modify a partition
+  using reference = value_type const &;
+  using pointer = value_type const *;
 
-    reference operator*() const { return p; }
-    pointer operator->() const { return &p; }
+  reference operator*() const
+  { return p; }
+  pointer operator->() const
+  { return &p; }
 
-    /// Increment to next partition. Fails if already done; i.e. bool(this) == false
-    AbstractPartitionGenerator& operator++();
+  /// Increment to next partition. Fails if already done; i.e. bool(this) == false
+  AbstractPartitionGenerator &operator++();
 
-protected:
-    AbstractPartitionGenerator(const Partition&);
-    virtual bool final_partition() const = 0;
-    bool done;
-    value_type p;
+ protected:
+  AbstractPartitionGenerator(const Partition &);
+  virtual bool final_partition() const = 0;
+  bool done;
+  value_type p;
 };
 
 /// Generate all partitions of `n` into `k` parts.
-class KPartitionGenerator : public virtual AbstractPartitionGenerator
+class KPartitionGenerator : public AbstractPartitionGenerator
 {
-public:
-    KPartitionGenerator(UInt_t n, UInt_t k);
+ public:
+  KPartitionGenerator(UInt_t n, UInt_t k);
 
-    KPartitionGenerator& operator++();
-protected:
-    virtual bool final_partition() const override;
+  KPartitionGenerator &operator++();
+ protected:
+  virtual bool final_partition() const override;
 };
 
 /// Generate all partitions of `n`.
-class PartitionGenerator : public virtual AbstractPartitionGenerator
+class PartitionGenerator : public AbstractPartitionGenerator
 {
-public:
-    PartitionGenerator(UInt_t n);
+ public:
+  PartitionGenerator(UInt_t n);
 
-    PartitionGenerator& operator++();
-protected:
-    virtual bool final_partition() const override;
+  PartitionGenerator &operator++();
+ protected:
+  virtual bool final_partition() const override;
 };
 
+std::ostream &operator<<(std::ostream &, const Partition &);
 
-std::ostream& operator<<(std::ostream&, const Partition&);
+}

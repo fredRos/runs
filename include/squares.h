@@ -2,9 +2,11 @@
 
 #pragma once
 
+namespace squares
+{
+
 /*!
- * Compute the cumulative distribution of the runs test statistic `T`
- * based on a chi^2 weighting of each run.
+ * Compute the cumulative distribution of the weighted-runs, or SQUARES, statistic `T`.
  *
  * The calculation implements Eqns. (16) and (17) from
  *
@@ -18,5 +20,7 @@
  * above the expectation.
  * @arg N The total number of data points.
  */
-double runs_cumulative(const double Tobs, const unsigned N);
-double runs_pvalue(const double Tobs, const unsigned N);
+double cumulative(const double Tobs, const unsigned N);
+double pvalue(const double Tobs, const unsigned N);
+
+}
