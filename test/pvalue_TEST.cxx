@@ -24,7 +24,6 @@ TEST(pvalue_test, mathematica)
 
 TEST(pvalue_test, critical)
 {
-    constexpr double alpha = 0.001;
     constexpr unsigned N = 50;
     // EXPECT_NEAR(runs_pvalue(23.758, N),  alpha, 1e-10);
     // EXPECT_NEAR(runs_pvalue(25.753, 2*N), alpha, 1e-10);

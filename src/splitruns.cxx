@@ -88,7 +88,7 @@ double Delta(const double Tobs, const unsigned Nl, const unsigned Nr, double eps
     return result;
 }
 
-int cubature_integrand(unsigned ndim, const double *uv, void* data, unsigned fdim, double *fval)
+int cubature_integrand(unsigned /*ndim*/, const double *uv, void* data, unsigned /*fdim*/, double *fval)
 {
     CubaIntegrandData & d = *static_cast<CubaIntegrandData*>(data);
     ++d.counter;
