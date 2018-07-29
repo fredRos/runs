@@ -1,4 +1,4 @@
-// Copyright 2017 Frederik Beaujean <Frederik.Beaujean@lmu.de>
+// Copyright 2018 Frederik Beaujean <beaujean@mpp.mpg.de>
 
 #include "pvalue.h"
 #include "partitions.h"
