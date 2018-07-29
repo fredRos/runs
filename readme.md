@@ -1,17 +1,22 @@
 [![Build Status](https://travis-ci.org/fredRos/runs.svg?branch=master)](https://travis-ci.org/fredRos/runs) [![DOI](https://zenodo.org/badge/87222105.svg)](https://zenodo.org/badge/latestdoi/87222105)
 
-Runs
-====
+Weighted-runs (SQUARES) statistic
+===========================================
 
-This project contains a mathematica and a C++ implementation of the
-distribution of the runs statistic defined in
+This project contains a mathematica and a C++ implementation of the cumulative
+distribution function of the weighted-runs statistic originally
+defined in
 
 Frederik Beaujean and Allen Caldwell. _A Test Statistic for Weighted
 Runs._ Journal of Statistical Planning and Inference 141, no. 11
 (November 2011):
 3437–46. [doi:10.1016/j.jspi.2011.04.022](http://dx.doi.org/10.1016/j.jspi.2011.04.022) [arXiv:1005.3233](http://arxiv.org/abs/1005.3233)
 
+We derived an approximation to be able to compute the cumulative also for large number of observations in
+
 Frederik Beaujean and Allen Caldwell. _Is the bump significant? An axion-search example_ [arXiv:1710.06642](http://arxiv.org/abs/1710.06642)
+
+where we renamed the weighted-runs statistic to the SQUARES statistic.
 
 mathematica
 ------------
@@ -123,8 +128,7 @@ runs_pvalue(Tobs, N);
 
 `openMP` helps as the speed-up of evaluating `runs_cumulative` for
 large `N>50` scales linearly with the number of physical cores and
-even benefits from hyperthreading. We tested on Intel Core i7-4600U
-with gcc4.9 and Intel Core i7-4770 with gcc 5.4.
+even benefits from hyperthreading. 
 
 ### split runs
 
@@ -140,7 +144,7 @@ runs_split_cumulative(Tobs, N, n);
 runs_split_pvalue(Tobs, N, n);
 ```
 
-The approximation involves a 1D numerical integral, the relative and absolute
+The approximation involves a 1D numerical integration whose relative and absolute
 target precision can be set as additional arguments, for example
 
 ```c++
@@ -163,7 +167,7 @@ building the first time.
     cd runs
     mkdir build
     cd build
-    cmake ..
+    cmake -DCMAKE_BUILD_TYPE=Release ..
     make
     OMP_NUM_THREADS=4 ./runs_test
 
@@ -224,7 +228,7 @@ strong scaling
 
 The C++ implementation of `runs_cumulative` and thus `runs_pvalue` benefits from
 hyperthreading. On an Intel Core i7-4770 with four cores and a maximum frequency
-of 3.4 GHz with gcc 5.4 and default build options, we observed the following run
+of 3.4 GHz with gcc 5.4 and release mode, we observed the following run
 times for the unit test `OMP_NUM_THREADS=n ./runs_test
 --gtest_filter=splitruns.paper_timing` that computes `runs_pvalue(T, N=96)`
 
@@ -241,8 +245,8 @@ beyond the number of physical cores.
 citing
 ------
 
-If you use this code in an academic setting, please cite this
-reference.
+If you use this code in an academic setting, please cite these 
+references.
 
     @article{beaujean2011test,
     title={A test statistic for weighted runs},
@@ -254,6 +258,15 @@ reference.
     year={2011},
     publisher={Elsevier}
     }
+    @article{Beaujean:2017eyq,
+      author         = "Beaujean, Frederik and Caldwell, Allen and Reimann, Olaf",
+      title          = "{Is the bump significant? An axion-search example}",
+      year           = "2017",
+      eprint         = "1710.06642",
+      archivePrefix  = "arXiv",
+      primaryClass   = "hep-ex",
+      SLACcitation   = "%%CITATION = ARXIV:1710.06642;%%"
+}
 
 license
 -------
